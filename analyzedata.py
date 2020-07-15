@@ -2,181 +2,96 @@ import json
 from PIL import Image
 import numpy as np
 from plotingAfterConv import *
-
-def getMinIdx(dominantColorsIdx, matrix, N):
-    i = dominantColorsIdx[0][0]
-    j = dominantColorsIdx[0][1]
-    k = dominantColorsIdx[0][2]
-    min = matrix[i][j][k]
-    minIdx = 0
-    for y in range(N):
-        i = dominantColorsIdx[y][0]
-        j = dominantColorsIdx[y][1]
-        k = dominantColorsIdx[y][2]
-        if(i==-1):
-            minIdx = y
-            break
-        if min > matrix[i][j][k]:
-            minIdx = y
-    return minIdx
+import plotingAfterConv as plotingAfterConv
+import math
 
 
-def new_ganre(geners, genre):
-    j = 0
-    for i in geners:
-        if i[0] == genre:
-            return j
-        j += 1
-    return -1
-
-
-def printGaners():
-    b6 = []
-    b7 = []
-    b8 = []
-    b9 = []
-    b00 = []
-    b10 = []
-    k = open('ndata.txt', 'r')
-    info = json.load(k)
-    for data in info['data']:
-        if (data['release-year'] != ''):
-            year = int(data['release-year'])
-            if (year >= 1960):
-                if (year < 1970):
-                    b = b6
-                elif (year < 1980):
-                    b = b7
-                elif (year < 1990):
-                    b = b8
-                elif (year < 2000):
-                    b = b9
-                elif (year < 2010):
-                    b = b00
-                else:
-                    b = b10
-                indexInArray = new_ganre(b, data["main_category"])
-                if (indexInArray == -1):
-                    b.append([data["main_category"], 1])
-                b[indexInArray][1] += 1
-
-    print(b6)
-    print(b7)
-    print(b8)
-    print(b9)
-    print(b00)
-    print(b10)
-
-
-# def getDominantColors(genre, ImageColors,N):
-#     min = 0
-#     minidx = 0
-#     dominantColors = [0 for col in range(N)]
-#     j = 0
-#     for i in ImageColors:
-#         if i[0] > ImageColors[dominantColors[minidx]][0]:
-#             dominantColors[minidx] = j
-#             minidx = getMinIdx(dominantColors, ImageColors, N)
-#         j += 1
-#     return dominantColors
-
-
-def getDominantColorsFromMatrix(matrix, N):
-    min = 0
-    minidx = 0
-    dominantColorsIdx = [[-1 for row in range(3)] for col in range(N)]
-    min = 0
-    j = 0
-    for i in range(matrix.shape[0]):
-        for j in range(matrix.shape[0]):
-            for k in range(matrix.shape[0]):
-                matrix[i][j][k]=matrix[i][j][k]*1000
-                if matrix[i][j][k] > min:
-                    dominantColorsIdx[minidx] = [i, j, k]
-                    minidx = getMinIdx(dominantColorsIdx, matrix,N)
-                    coord=dominantColorsIdx[minidx]
-                    if coord[0]==-1:
-                        min==0
-                    else:
-                        min=matrix[coord[0]][coord[1]][coord[2]]
-    colors=np.zeros([N,3])
-    ammunt= np.zeros(N)
-    for r in range(N):
-        i = dominantColorsIdx[r][0]
-        j = dominantColorsIdx[r][1]
-        k = dominantColorsIdx[r][2]
-        ammunt[r]=matrix[i][j][k]
-        colors[r]=[(i*10)/255,(j*10)/255,(k*10)/255]
-
-
-
-    return ammunt,colors
-
-
-def add_image_colors(path, colorMatrix):
-    myImage = None
-    try:
-        myImage = Image.open(path)
-    except:
-        return
-    reducedImagePalette = myImage.convert('P', palette=Image.ADAPTIVE, colors=256)
-    reduceImage = reducedImagePalette.convert('RGB', palette=Image.ADAPTIVE)
-    reduceImageColors = reduceImage.getcolors()
-    l, w = reduceImage.size
-    for i in reduceImageColors:
-        colorMatrix[int(i[1][0] / 10)][int(i[1][1] / 10)][int(i[1][2] / 10)] += i[0] / (l * w)  ## אחוז
-
-
-def imageColorsByGenre(genre):
+def combineImage(artist, genre, all,name_to_save):
     geners = ['rock', 'pop', 'Classical', 'Jazz', 'Latin Music', 'Metal']
-    colorMatrix = np.zeros([26, 26, 26])
-    all = False
-    if (genre == ''):
-        all = True
     k = open('ndata.txt', 'r')
     info = json.load(k)
-    h=0
+    imgs = []
+    c=0
     for data in info['data']:
-        # if h > 50:
-        #     break
-        curGenre = data["main_category"]
-        if(curGenre!="Alternative Rock"):
-            all=False
-        if all:
-            if curGenre != "" and curGenre in str(geners):
-                add_image_colors(data["image_path"], colorMatrix)
-        else:
-            if curGenre==genre:
-                add_image_colors(data["image_path"], colorMatrix)
-                h += 1
+        if (artist != "" and artist == data["artist"]) or (genre != "" and data["main_category"] == genre) or (
+                all and data["main_category"] != "" and data["main_category"] in str(geners)):
+            curImg = None
+            path = data["image_path"]
+            try:
+                curImg = Image.open(data["image_path"])
+            except:
+                continue
+            imgs.append(curImg)
+            if(c==556):
+                print(data["image_path"])
+            c+=1
 
-    return colorMatrix
+    kjkj=combineImageRow(imgs)
+    # totalImgNum = len(imgs)
+    # imgnum = 0
+    # x = int(math.sqrt(totalImgNum * 5 / 9))
+    # y = int(totalImgNum / x)
+    # to_comb_col = []
+    # paths = []
+    #
+    # for j in range(y):
+    #     to_comb_row = []
+    #     for i in range(x):
+    #         to_comb_row.append(imgs[imgnum])
+    #         imgnum += 1
+    #     curImg = combineImageRow(to_comb_row)
+    #     name = str(imgnum) + name_to_save
+    #     name += ".jpg"
+    #     curImg.save(name)
+    #     paths.append(name)
+    #
+    # imgs = [Image.open(i) for i in paths]
+    # finle_img = combineImageCol(imgs)
+    # finle_img.show()
 
 
-def imageColorsByArtisi(artist):
-    colorMatrix = np.zeros([26, 26, 26])
-    k = open('ndata.txt', 'r')
-    info = json.load(k)
-    h = 0
-    for data in info['data']:
-        # if h > 50:
-        #     break
-        curArtist = data["artist"]
-        if curArtist == artist:
-            add_image_colors(data["image_path"], colorMatrix)
-            h += 1
-    return colorMatrix
+def combineImageRow(imgs):
+    # pick the image which is the smallest, and resize the others to match it (can be arbitrary image shape here)
+    min_shape = sorted([(np.sum(i.size), i.size) for i in imgs])[0][1]
+    imgs_comb = np.hstack((np.asarray(i.resize(min_shape)) for i in imgs))
+
+    # save that beautiful picture
+    imgs_comb = Image.fromarray(imgs_comb)
+    # imgs_comb.save('Trifecta.jpg')
+    return imgs_comb
 
 
+def combineImageCol(imgs):
+    # pick the image which is the smallest, and resize the others to match it (can be arbitrary image shape here)
+    min_shape = sorted([(np.sum(i.size), i.size) for i in imgs])[0][1]
+    imgs_comb = np.hstack((np.asarray(i.resize(min_shape)) for i in imgs))
+
+    # for a vertical stacking it is simple: use vstack
+    imgs_comb = np.vstack((np.asarray(i.resize(min_shape)) for i in imgs))
+    imgs_comb = Image.fromarray(imgs_comb)
+    return imgs_comb
+
+
+combineImage("", "Rock", False,"s")
 # imageColors('rock')
 # printGaners()
-N=20
-# mat=imageColorsByGenre("Pop")
-mat=imageColorsByArtisi("Green Day")
-r,c=getDominantColorsFromMatrix(mat,N)
-theta = np.arange(0, 3.14 * 2, (2 * 3.14) / N, dtype=float)
-width = (2 * 3.14) / N
-plot_bar(r, c)
-# plot_polar(theta,r,width,c)
-
-
+N = 20
+# # mat=imageColorsByGenre("Pop")
+# mat = imageColorsByArtisi("Green Day")
+# r, c = getDominantColorsFromMatrix(mat, N)
+#
+# theta = np.arange(0, 3.14 * 2, (2 * 3.14) / N, dtype=float)
+# width = (2 * 3.14) / N
+# plot_bar(r, c)
+# # plot_polar(theta,r,width,c)
+#
+#
+# path = "D:/pics_for_digi/3.jpg"
+#
+# colorMatrix1 = np.zeros([26, 26, 26])
+# add_image_colors(path, colorMatrix1)
+# r, c = getDominantColorsFromMatrix(colorMatrix1, N)
+#
+# r_1, c_1 = printPallet(path, N)
+#
+# print("y")
