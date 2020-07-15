@@ -4,9 +4,11 @@ import matplotlib.pyplot as plt
 
 
 def getMinIdx(myArray, image, N):
-    min = image[myArray[0]][0]
+    min = 1000**3
     minIdx = 0
     for i in range(N):
+        if myArray[i]==-1:
+            return i
         if min > image[myArray[i]][0]:
             minIdx = i
     return minIdx
@@ -45,7 +47,7 @@ def plot_bar(r, c):
     plt.show()
     return
 
-def printPallet(path, plot): #plot 0 = circle , plot 1 o square visualization
+def printPallet(path, plot):  # plot 0 = circle , plot 1 o square visualization
     myimage = None
     try:
         myImage = Image.open(path)
@@ -56,16 +58,16 @@ def printPallet(path, plot): #plot 0 = circle , plot 1 o square visualization
     reduceImage = reducedImagePalette.convert('RGB', palette=Image.ADAPTIVE)
     reduceImageColors = reduceImage.getcolors()
 
-
-
-
     N = 10
     min = 0
-    minidx = 0
-    dominantColors = [0 for col in range(N)]
+    minidx = -1
+    dominantColors = [-1 for col in range(N)]
     j = 0
     for i in reduceImageColors:
-        if i[0] > reduceImageColors[dominantColors[minidx]][0]:
+        if dominantColors[minidx] == -1:
+            dominantColors[minidx] = j
+            minidx = getMinIdx(dominantColors, reduceImageColors, N)
+        elif i[0] > reduceImageColors[dominantColors[minidx]][0]:
             dominantColors[minidx] = j
             minidx = getMinIdx(dominantColors, reduceImageColors, N)
         j += 1
@@ -79,29 +81,11 @@ def printPallet(path, plot): #plot 0 = circle , plot 1 o square visualization
         colors[i][1] = reduceImageColors[dominantColors[i]][1][1] / 255
         colors[i][2] = reduceImageColors[dominantColors[i]][1][2] / 255
         radii[i] = reduceImageColors[dominantColors[i]][0]
-    if(plot==1):
+    if (plot == 1):
         plot_bar(radii, colors)
     else:
-        plot_polar(theta,radii,width,colors)
+        plot_polar(theta, radii, width, colors)
 
-# #
-#
-# #
-# # def sameColor(a,b):
-# #     return (a[1]==b[1] and a[2]==b[2] and a[3]==b[3])
-# #
-# # def reduceImagePalette(imageColors):
-# #     temp=np.zeros([len(imageColors),4])
-# #     j=0
-# #     for i in imageColors:
-# #         temp[j]=[i[0],int(i[1][0]/10)*10,int(i[1][1]/10)*10,int(i[1][2]/10)*10]
-# #         j+=1
-# #     AfterReduce=[]
-# #     for i in range(len(temp)):
-# #         if(temp[i][0]!=0):
-# #             for j in range(i+1,len(temp)):
-# #                 if(sameColor(temp[i],temp[j])):
-# #                     temp[i][0]+=temp[j][0]
-# #                     temp[j][0]=0
-# #             AfterReduce.append(temp[i])
-# #     return AfterReduce
+
+printPallet("Jazz.jpg", 1)
+

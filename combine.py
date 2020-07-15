@@ -9,6 +9,7 @@ def combineImage(artist, genre, all, years, name_to_save):
     k = open('ndata.txt', 'r')
     info = json.load(k)
     imgs = []
+    c=0
     for data in info['data']:
         if (artist != "" and artist == data["artist"]) or (genre != "" and data["main_category"] == genre) or (
                 all and data["main_category"] != "" and data["main_category"] in str(geners)):
@@ -23,6 +24,9 @@ def combineImage(artist, genre, all, years, name_to_save):
                     except:
                         continue
                     imgs.append(curImg)
+                    if(c==24):
+                        print(data["image_path"])
+                    c+=1
 
     totalImgNum = len(imgs)
     imgnum = 0
@@ -70,4 +74,4 @@ def combineImageCol(imgs):
     return imgs_comb
 
 
-combineImage("", "Rock", False,[1970, 1980], "s")
+combineImage("", "Jazz", False,[1960, 2016], "Jazz")
