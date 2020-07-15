@@ -2,6 +2,7 @@ import json
 from PIL import Image
 import numpy as np
 import math
+import os
 
 
 def combineImage(artist, genre, all, years, name_to_save):
@@ -9,12 +10,12 @@ def combineImage(artist, genre, all, years, name_to_save):
     k = open('ndata.txt', 'r')
     info = json.load(k)
     imgs = []
-    c=0
+    c = 0
     for data in info['data']:
         if (artist != "" and artist == data["artist"]) or (genre != "" and data["main_category"] == genre) or (
                 all and data["main_category"] != "" and data["main_category"] in str(geners)):
 
-            if data["release-year"]!="" :
+            if data["release-year"] != "":
                 year = int(data["release-year"])
                 if ((year >= years[0]) and (year < years[1])):
                     curImg = None
@@ -24,9 +25,9 @@ def combineImage(artist, genre, all, years, name_to_save):
                     except:
                         continue
                     imgs.append(curImg)
-                    if(c==24):
+                    if (c == 24):
                         print(data["image_path"])
-                    c+=1
+                    c += 1
 
     totalImgNum = len(imgs)
     imgnum = 0
@@ -34,13 +35,20 @@ def combineImage(artist, genre, all, years, name_to_save):
     y = int(totalImgNum / x)
     paths = []
 
+    dir = name_to_save + "/"
+    try:
+        os.mkdir(name_to_save)
+    except OSError:
+        print ("Creation of the directory %s failed" % path)
+        dir = ""
+
     for j in range(y):
         to_comb_row = []
         for i in range(x):
             to_comb_row.append(imgs[imgnum])
             imgnum += 1
         curImg = combineImageRow(to_comb_row)
-        name = str(imgnum) + name_to_save
+        name = dir + str(imgnum) + name_to_save
         name += ".jpg"
         curImg.save(name)
         paths.append(name)
@@ -49,6 +57,7 @@ def combineImage(artist, genre, all, years, name_to_save):
     finle_img = combineImageCol(imgs)
     finle_img.show()
     finle_img.save(name_to_save + ".jpg")
+    
     return finle_img
 
 
@@ -74,4 +83,4 @@ def combineImageCol(imgs):
     return imgs_comb
 
 
-combineImage("", "Jazz", False,[1960, 2016], "Jazz")
+combineImage("", "Jazz", False, [1960, 2016], "Jazz")
