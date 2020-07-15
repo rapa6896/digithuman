@@ -4,24 +4,25 @@ import numpy as np
 import math
 
 
-def combineImage(artist, genre, all,name_to_save):
+def combineImage(artist, genre, all, years, name_to_save):
     geners = ['rock', 'pop', 'Classical', 'Jazz', 'Latin Music', 'Metal']
     k = open('ndata.txt', 'r')
     info = json.load(k)
     imgs = []
-    c=0
     for data in info['data']:
-        if c==5:
-            break
         if (artist != "" and artist == data["artist"]) or (genre != "" and data["main_category"] == genre) or (
                 all and data["main_category"] != "" and data["main_category"] in str(geners)):
-            curImg = None
-            path = data["image_path"]
-            try:
-                curImg = Image.open(data["image_path"])
-            except:
-                continue
-            imgs.append(curImg)
+
+            if data["release-year"]!="" :
+                year = int(data["release-year"])
+                if ((year >= years[0]) and (year < years[1])):
+                    curImg = None
+                    path = data["image_path"]
+                    try:
+                        curImg = Image.open(data["image_path"])
+                    except:
+                        continue
+                    imgs.append(curImg)
 
     totalImgNum = len(imgs)
     imgnum = 0
@@ -43,7 +44,7 @@ def combineImage(artist, genre, all,name_to_save):
     imgs = [Image.open(i) for i in paths]
     finle_img = combineImageCol(imgs)
     finle_img.show()
-    finle_img.save(name_to_save+".jpg")
+    finle_img.save(name_to_save + ".jpg")
     return finle_img
 
 
@@ -69,5 +70,4 @@ def combineImageCol(imgs):
     return imgs_comb
 
 
-combineImage("", "Rock", False,"s")
-
+combineImage("", "Rock", False,[1970, 1980], "s")
