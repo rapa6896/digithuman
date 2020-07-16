@@ -3,9 +3,13 @@ from PIL import Image
 import numpy as np
 import math
 import os
+import combine
+
+def sortKey(elem):
+    return elem[0]
 
 
-def combineImage(artist, genre, all, years, name_to_save):
+def getSortedImage(artist, genre, all,years):
     geners = ['Rock', 'Pop', 'Classical', 'Jazz', 'Latin Music', 'Metal']
     k = open('ndata.txt', 'r')
     info = json.load(k)
@@ -23,8 +27,12 @@ def combineImage(artist, genre, all, years, name_to_save):
                         curImg = Image.open(data["image_path"])
                     except:
                         continue
-                    imgs.append(curImg)
+                    imgs.append([year, curImg])
 
+    imgs.sort(key=sortKey)
+    return [row[1] for row in imgs]
+
+def CombineImageFromArray(imgs, name_to_save):
     totalImgNum = len(imgs)
     imgnum = 0
     x = int(math.sqrt(totalImgNum * 5 / 9))
@@ -35,55 +43,29 @@ def combineImage(artist, genre, all, years, name_to_save):
     try:
         os.mkdir(name_to_save)
     except OSError:
-        print ("Creation of the directory %s failed" % path)
+        print ("Creation of the directory %s failed" % name_to_save)
         dir = ""
     for j in range(y):
         to_comb_row = []
         for i in range(x):
             to_comb_row.append(imgs[imgnum])
             imgnum += 1
-        curImg = combineImageRow(to_comb_row)
+        curImg = combine.combineImageRow(to_comb_row)
         name = dir + str(imgnum) + name_to_save
         name += ".jpg"
         curImg.save(name)
         paths.append(name)
 
     imgs = [Image.open(i) for i in paths]
-    finle_img = combineImageCol(imgs)
+    finle_img = combine.combineImageCol(imgs)
     finle_img.show()
     finle_img.save(name_to_save + ".jpg")
 
     return finle_img
 
-
-def combineImageRow(imgs):
-    # pick the image which is the smallest, and resize the others to match it (can be arbitrary image shape here)
-    min_shape = sorted([(np.sum(i.size), i.size) for i in imgs])[0][1]
-    h=[]
-    g=0
-    for i in imgs:
-        d=np.asarray(i.resize(min_shape))
-        try:
-            lenz=len(d[0][0])
-            succ=g
-        except:
-            d=np.asarray(imgs[succ].resize(min_shape))
-        h.append(d)
-        g+=1
-    imgs_comb = np.hstack(h)
-
-    # save that beautiful picture
-    imgs_comb = Image.fromarray(imgs_comb)
-    return imgs_comb
-
-
-def combineImageCol(imgs):
-    # pick the image which is the smallest, and resize the others to match it (can be arbitrary image shape here)
-    min_shape = sorted([(np.sum(i.size), i.size) for i in imgs])[0][1]
-    # for a vertical stacking it is simple: use vstack
-    imgs_comb = np.vstack((np.asarray(i.resize(min_shape)) for i in imgs))
-    imgs_comb = Image.fromarray(imgs_comb)
-    return imgs_comb
-
+def sortAndCombineImage(artist, genre, All, years, finale_file_name):
+    sortedImgs = getSortedImage(artist, genre, All ,years)
+    finale=CombineImageFromArray(sortedImgs, finale_file_name)
+    return finale
 
 

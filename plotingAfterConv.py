@@ -64,13 +64,17 @@ def printPallet(path, plot):  # plot 0 = circle , plot 1 o square visualization
     dominantColors = [-1 for col in range(N)]
     j = 0
     for i in reduceImageColors:
-        if dominantColors[minidx] == -1:
-            dominantColors[minidx] = j
-            minidx = getMinIdx(dominantColors, reduceImageColors, N)
-        elif i[0] > reduceImageColors[dominantColors[minidx]][0]:
-            dominantColors[minidx] = j
-            minidx = getMinIdx(dominantColors, reduceImageColors, N)
-        j += 1
+        x=i[1][0]
+        y=i[1][1]
+        z=i[1][2]
+        if x+y+z<256:
+            if dominantColors[minidx] == -1:
+                dominantColors[minidx] = j
+                minidx = getMinIdx(dominantColors, reduceImageColors, N)
+            elif i[0] > reduceImageColors[dominantColors[minidx]][0]:
+                dominantColors[minidx] = j
+                minidx = getMinIdx(dominantColors, reduceImageColors, N)
+            j += 1
     theta = np.arange(0, 3.14 * 2, (2 * 3.14) / N, dtype=float)
     radii = np.zeros(N)
     width = (2 * 3.14) / N
@@ -87,5 +91,5 @@ def printPallet(path, plot):  # plot 0 = circle , plot 1 o square visualization
         plot_polar(theta, radii, width, colors)
 
 
-printPallet("Jazz.jpg", 1)
+
 
