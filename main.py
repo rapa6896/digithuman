@@ -16,8 +16,8 @@ import priceAndRat
 # ___________________years: [int:a,int:b] only album thet a<= release-year < b
 # ___________________finale file name: string
 
-# combine.combineImage("", "Metal", False, [1960, 2016], "Metal")
-
+# combine.combineImage("", "Jazz", False, [1960, 2016], "Jazz")
+plotingAfterConv.printPallet("Jazz.jpg", 1,[150,256])
 # ___________________combine img sorted by year
 # ___________________combine.combineImage(artist, genre, All, years, finale file name)
 # ___________________ only one!!!!!:
@@ -28,7 +28,6 @@ import priceAndRat
 # ___________________finale file name: string
 
 # sortedImags.sortAndCombineImage("", "Latin Music", False, [1960, 2016], "Latin Music")
-# plotingAfterConv.printPallet("Jazz.jpg", 1)
 #
 
 
@@ -37,22 +36,23 @@ import priceAndRat
 # ___________________rankR:None OR [int(low),int(high)]
 # ___________________finale file name: string
 
-numberOfIntevals = 3
-jampRank = 1000
-jampPrice = 5
-for i in range(numberOfIntevals):
-    minRank = i * jampRank
-    maxRank = (i + 1) * jampRank
-    nameRank = "renk_" + str(minRank) + "_" + str(maxRank)
-    minPrice = i * jampPrice
-    maxPrice = (i + 1) * jampPrice
-    namePrice = "Price_" + str(minRank) + "_" + str(maxRank)
-    try:
-        priceAndRat.combineImagePriceOrRank(None, [minRank, maxRank], nameRank)
-        priceAndRat.combineImagePriceOrRank([minPrice, maxPrice], None, namePrice)
-        plotingAfterConv.printPallet(namePrice + ".jpg", 1)
-    except:
-        continue
+# numberOfIntevals = 3
+# jampRank = 1000
+# jampPrice = 5
+# colorRange=[0,256*3]
+# for i in range(numberOfIntevals):
+#     minRank = i * jampRank
+#     maxRank = (i + 1) * jampRank
+#     nameRank = "renk_" + str(minRank) + "_" + str(maxRank)
+#     minPrice = i * jampPrice
+#     maxPrice = (i + 1) * jampPrice
+#     namePrice = "Price_" + str(minRank) + "_" + str(maxRank)
+#     try:
+#         priceAndRat.combineImagePriceOrRank(None, [minRank, maxRank], nameRank)
+#         priceAndRat.combineImagePriceOrRank([minPrice, maxPrice], None, namePrice)
+#         plotingAfterConv.printPallet(namePrice + ".jpg", 1,colorRange)
+#     except:
+#         continue
 #
 #
 #

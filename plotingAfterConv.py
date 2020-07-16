@@ -47,7 +47,7 @@ def plot_bar(r, c):
     plt.show()
     return
 
-def printPallet(path, plot):  # plot 0 = circle , plot 1 o square visualization
+def printPallet(path, plot,colorRange):  # plot 0 = circle , plot 1 o square visualization
     myimage = None
     try:
         myImage = Image.open(path)
@@ -67,7 +67,7 @@ def printPallet(path, plot):  # plot 0 = circle , plot 1 o square visualization
         x=i[1][0]
         y=i[1][1]
         z=i[1][2]
-        if x+y+z<256:
+        if x+y+z>=colorRange[0] and x+y+z<colorRange[1]:
             if dominantColors[minidx] == -1:
                 dominantColors[minidx] = j
                 minidx = getMinIdx(dominantColors, reduceImageColors, N)
