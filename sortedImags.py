@@ -5,11 +5,12 @@ import math
 import os
 import combine
 
+
 def sortKey(elem):
     return elem[0]
 
 
-def getSortedImage(artist, genre, all,years):
+def getSortedImage_with_years(artist, genre, all, years):
     geners = ['Rock', 'Pop', 'Classical', 'Jazz', 'Latin Music', 'Metal']
     k = open('ndata.txt', 'r')
     info = json.load(k)
@@ -17,7 +18,29 @@ def getSortedImage(artist, genre, all,years):
     for data in info['data']:
         if (artist != "" and artist == data["artist"]) or (genre != "" and data["main_category"] == genre) or (
                 all and data["main_category"] != "" and data["main_category"] in str(geners)):
+            if data["release-year"] != "":
+                year = int(data["release-year"])
+                if ((year >= years[0]) and (year < years[1])):
+                    curImg = None
+                    path = data["image_path"]
+                    try:
+                        curImg = Image.open(data["image_path"])
+                    except:
+                        continue
+                    imgs.append([year, data["image_path"], curImg])
 
+    imgs.sort(key=sortKey)
+    return imgs
+
+
+def getSortedImage(artist, genre, all, years):
+    geners = ['Rock', 'Pop', 'Classical', 'Jazz', 'Latin Music', 'Metal']
+    k = open('ndata.txt', 'r')
+    info = json.load(k)
+    imgs = []
+    for data in info['data']:
+        if (artist != "" and artist == data["artist"]) or (genre != "" and data["main_category"] == genre) or (
+                all and data["main_category"] != "" and data["main_category"] in str(geners)):
             if data["release-year"] != "":
                 year = int(data["release-year"])
                 if ((year >= years[0]) and (year < years[1])):
@@ -31,6 +54,7 @@ def getSortedImage(artist, genre, all,years):
 
     imgs.sort(key=sortKey)
     return [row[1] for row in imgs]
+
 
 def CombineImageFromArray(imgs, name_to_save):
     totalImgNum = len(imgs)
@@ -63,9 +87,8 @@ def CombineImageFromArray(imgs, name_to_save):
 
     return finle_img
 
+
 def sortAndCombineImage(artist, genre, All, years, finale_file_name):
-    sortedImgs = getSortedImage(artist, genre, All ,years)
-    finale=CombineImageFromArray(sortedImgs, finale_file_name)
+    sortedImgs = getSortedImage(artist, genre, All, years)
+    finale = CombineImageFromArray(sortedImgs, finale_file_name)
     return finale
-
-
