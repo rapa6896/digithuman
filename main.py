@@ -5,41 +5,56 @@ import grayscale
 import priceAndRat
 
 # ['Rock', 'Pop', 'Classical', 'Jazz', 'Latin Music', 'Metal']
-#
-#
-# # combine img witיout sorting
-# # combine.combineImage(artist, genre, All, years, finale file name)
-# # only one!!!!!:
-# # artist: string of the artist name or ""
-# # genre: string of the artist name or ""
-# # All: True\False
-# # years: [int:a,int:b] only album thet a<= release-year < b
-# # finale file name: string
-#
+
+
+# ___________________combine img witיout sorting
+# ___________________combine.combineImage(artist, genre, All, years, finale file name)
+# ___________________only one!!!!!:
+# ___________________artist: string of the artist name or ""
+# ___________________genre: string of the artist name or ""
+# ___________________All: True\False
+# ___________________years: [int:a,int:b] only album thet a<= release-year < b
+# ___________________finale file name: string
+
 # combine.combineImage("", "Metal", False, [1960, 2016], "Metal")
-#
-# # combine img sorted by year
-# # combine.combineImage(artist, genre, All, years, finale file name)
-# # only one!!!!!:
-# # artist: string of the artist name or ""
-# # genre: string of the artist name or ""
-# # All: True\False
-# # years: [int:a,int:b] only album thet a<= release-year < b
-# # finale file name: string
-#
+
+# ___________________combine img sorted by year
+# ___________________combine.combineImage(artist, genre, All, years, finale file name)
+# ___________________ only one!!!!!:
+# ___________________ artist: string of the artist name or ""
+# ___________________ genre: string of the artist name or ""
+# ___________________ All: True\False
+# ___________________ years: [int:a,int:b] only album thet a<= release-year < b
+# ___________________finale file name: string
+
 # sortedImags.sortAndCombineImage("", "Latin Music", False, [1960, 2016], "Latin Music")
 # plotingAfterConv.printPallet("Jazz.jpg", 1)
 #
+
+
+# ___________________combineImagePriceOrRank(priceR, rankR, finale file name)
+# ___________________priceR: None OR [int(low),int(high)]
+# ___________________rankR:None OR [int(low),int(high)]
+# ___________________finale file name: string
+
+numberOfIntevals = 3
+jampRank = 1000
+jampPrice = 5
+for i in range(numberOfIntevals):
+    minRank = i * jampRank
+    maxRank = (i + 1) * jampRank
+    nameRank = "renk_" + str(minRank) + "_" + str(maxRank)
+    minPrice = i * jampPrice
+    maxPrice = (i + 1) * jampPrice
+    namePrice = "Price_" + str(minRank) + "_" + str(maxRank)
+    try:
+        priceAndRat.combineImagePriceOrRank(None, [minRank, maxRank], nameRank)
+        priceAndRat.combineImagePriceOrRank([minPrice, maxPrice], None, namePrice)
+        plotingAfterConv.printPallet(namePrice + ".jpg", 1)
+    except:
+        continue
 #
 #
-#combineImagePriceOrRank(priceR, rankR, finale file name)
-#priceR: None OR [int(low),int(high)]
-#rankR:None OR [int(low),int(high)]
-#finale file name: string
-priceAndRat.combineImagePriceOrRank(None, [2000,3000], "renk_2000_3000")
-plotingAfterConv.printPallet("price_0_10.jpg", 1)
 #
-#
-#
-#
+# _____________________dowhatwineed(artist, genre, all,years):
 # grayscale.dowhatwineed("", "", True, [1960, 2016])
