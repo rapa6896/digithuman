@@ -23,7 +23,7 @@ def combineImage(artist, genre, all, years, name_to_save):
                         curImg = Image.open(data["image_path"])
                     except:
                         continue
-                    imgs.append(curImg)
+                    plotingAfterConv.printPallet("Jazz.jpg", 1, [150, 256])
 
     totalImgNum = len(imgs)
     imgnum = 0

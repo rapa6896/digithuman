@@ -14,14 +14,17 @@ def getMinIdx(myArray, image, N):
     return minIdx
 
 
-def plot_polar(t, r, w, c):
+def plot_polar(t, r, w, c,pathToSave):
     ax = plt.subplot(111, projection='polar')
     ax.bar(t, r, width=w, bottom=0.0, color=c, alpha=1)
+
+    if(pathToSave!=""):
+        plt.savefig(pathToSave,dpi=400)
     plt.show()
     return
 
 
-def plot_bar(r, c):
+def plot_bar(r, c,pathToSave):
     category_names = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
     labels = ['1']
@@ -44,10 +47,13 @@ def plot_bar(r, c):
     ax.legend(ncol=len(category_names), bbox_to_anchor=(0, 1),
               loc='lower left', fontsize='small')
 
+
+    if (pathToSave != ""):
+        plt.savefig(pathToSave,dpi=400)
     plt.show()
     return
 
-def printPallet(path, plot,colorRange):  # plot 0 = circle , plot 1 o square visualization
+def printPallet(path, plot,colorRange,pathToSave):  # plot 0 = circle , plot 1 o square visualization
     myimage = None
     try:
         myImage = Image.open(path)
@@ -86,9 +92,9 @@ def printPallet(path, plot,colorRange):  # plot 0 = circle , plot 1 o square vis
         colors[i][2] = reduceImageColors[dominantColors[i]][1][2] / 255
         radii[i] = reduceImageColors[dominantColors[i]][0]
     if (plot == 1):
-        plot_bar(radii, colors)
+        plot_bar(radii, colors,pathToSave)
     else:
-        plot_polar(theta, radii, width, colors)
+        plot_polar(theta, radii, width, colors,pathToSave)
 
 
 

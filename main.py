@@ -3,7 +3,7 @@ import sortedImags
 import plotingAfterConv
 import grayscale
 import priceAndRat
-
+import printArtist
 # ['Rock', 'Pop', 'Classical', 'Jazz', 'Latin Music', 'Metal']
 
 
@@ -17,7 +17,7 @@ import priceAndRat
 # ___________________finale file name: string
 
 # combine.combineImage("", "Jazz", False, [1960, 2016], "Jazz")
-plotingAfterConv.printPallet("Jazz.jpg", 1,[150,256])
+# plotingAfterConv.printPallet("Jazz.jpg", 1,[150,256],"")
 # ___________________combine img sorted by year
 # ___________________combine.combineImage(artist, genre, All, years, finale file name)
 # ___________________ only one!!!!!:
@@ -50,7 +50,7 @@ plotingAfterConv.printPallet("Jazz.jpg", 1,[150,256])
 #     try:
 #         priceAndRat.combineImagePriceOrRank(None, [minRank, maxRank], nameRank)
 #         priceAndRat.combineImagePriceOrRank([minPrice, maxPrice], None, namePrice)
-#         plotingAfterConv.printPallet(namePrice + ".jpg", 1,colorRange)
+#         plotingAfterConv.printPallet(namePrice + ".jpg", 1,colorRange,"")
 #     except:
 #         continue
 #
@@ -58,3 +58,4 @@ plotingAfterConv.printPallet("Jazz.jpg", 1,[150,256])
 #
 # _____________________dowhatwineed(artist, genre, all,years):
 # grayscale.dowhatwineed("", "", True, [1960, 2016])
+printArtist.printArtist('The Beatles')
