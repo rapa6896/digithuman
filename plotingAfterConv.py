@@ -20,7 +20,6 @@ def plot_polar(t, r, w, c,pathToSave):
 
     if(pathToSave!=""):
         plt.savefig(pathToSave,dpi=400)
-    plt.show()
     return
 
 
@@ -50,7 +49,6 @@ def plot_bar(r, c,pathToSave):
 
     if (pathToSave != ""):
         plt.savefig(pathToSave,dpi=400)
-    plt.show()
     return
 
 def printPallet(path, plot,colorRange,pathToSave):  # plot 0 = circle , plot 1 o square visualization

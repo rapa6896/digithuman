@@ -4,6 +4,7 @@ import plotingAfterConv
 import grayscale
 import priceAndRat
 import printArtist
+
 # ['Rock', 'Pop', 'Classical', 'Jazz', 'Latin Music', 'Metal']
 
 
@@ -36,26 +37,31 @@ import printArtist
 # ___________________rankR:None OR [int(low),int(high)]
 # ___________________finale file name: string
 
-# numberOfIntevals = 3
-# jampRank = 1000
-# jampPrice = 5
-# colorRange=[0,256*3]
-# for i in range(numberOfIntevals):
-#     minRank = i * jampRank
-#     maxRank = (i + 1) * jampRank
-#     nameRank = "renk_" + str(minRank) + "_" + str(maxRank)
-#     minPrice = i * jampPrice
-#     maxPrice = (i + 1) * jampPrice
-#     namePrice = "Price_" + str(minRank) + "_" + str(maxRank)
-#     try:
-#         priceAndRat.combineImagePriceOrRank(None, [minRank, maxRank], nameRank)
-#         priceAndRat.combineImagePriceOrRank([minPrice, maxPrice], None, namePrice)
-#         plotingAfterConv.printPallet(namePrice + ".jpg", 1,colorRange,"")
-#     except:
-#         continue
+numberOfIntevals = 5
+jampRank = 100000
+jampPrice = 10
+colorRange=[20,256*1.85]
+for i in range(numberOfIntevals):
+    minRank = i * jampRank
+    maxRank = (i + 1) * jampRank
+    nameRank = "renk_" + str(minRank) + "_" + str(maxRank)
+    minPrice = i * jampPrice
+    maxPrice = (i + 1) * jampPrice
+    namePrice = "Price_" + str(minPrice) + "_" + str(maxPrice)
+    try:
+        priceAndRat.combineImagePriceOrRank(None, [minRank, maxRank], nameRank)
+        priceAndRat.combineImagePriceOrRank([minPrice, maxPrice], None, namePrice)
+        plotingAfterConv.printPallet(namePrice + ".jpg", 1,colorRange,namePrice+" pltBar" + ".jpg")
+        plotingAfterConv.printPallet(namePrice + ".jpg", 0, colorRange, namePrice + " pltPol" + ".jpg")
+        plotingAfterConv.printPallet(nameRank + ".jpg", 1, colorRange, nameRank + " pltBar" + ".jpg")
+        plotingAfterConv.printPallet(nameRank + ".jpg", 0, colorRange, nameRank + " pltPol" + ".jpg")
+    except:
+        continue
+
+
+
+#_____________________dowhatwineed(artist, genre, all,years):
+
+# grayscale.dowhatwineed("", "", True, [1960, 2020], "grayScale all")
 #
-#
-#
-# _____________________dowhatwineed(artist, genre, all,years):
-# grayscale.dowhatwineed("", "", True, [1960, 2016])
-printArtist.printArtist('The Beatles')
+# sortedImags.sortAndCombineImage("", "", True, [1960, 2016], "all image sort by year")

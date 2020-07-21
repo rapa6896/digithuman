@@ -69,9 +69,9 @@ def CombineImageFromArray(imgs, name_to_save):
     except OSError:
         print ("Creation of the directory %s failed" % name_to_save)
         dir = ""
-    for j in range(y):
+    for j in range(x):
         to_comb_row = []
-        for i in range(x):
+        for i in range(y):
             to_comb_row.append(imgs[imgnum])
             imgnum += 1
         curImg = combine.combineImageRow(to_comb_row)

@@ -10,12 +10,12 @@ import grayscale
 import priceAndRat
 
 
-def printArtist(artist):
-    colorRange = [0, 256 * 3]
+def printArtist(artist,colorRange):
     k = open('ndata.txt', 'r')
     info = json.load(k)
     dir = ""
     imgs=[]
+    f=0
     try:
         os.mkdir(artist)
         dir = artist + "/"
@@ -29,13 +29,20 @@ def printArtist(artist):
                 curImg = Image.open(data["image_path"])
             except:
                 continue
-            nameImg = dir + data["title"] + " img.jpg"
+            if "'" in data["title"] or "." in data["title"]  or ":" in data["title"] or "-" in data["title"]  :
+                title=str(f)
+            else:
+                title= data["title"]
+            nameImg = dir + title + " img.jpg"
+
+
             curImg.save(nameImg)
-            plotBarName = dir + data["title"] + " PlotBar.jpg"
-            plotPolName = dir + data["title"] + " PlotPol.jpg"
+            plotBarName = dir + title + " PlotBar.jpg"
+            plotPolName = dir + title + " PlotPol.jpg"
             plotingAfterConv.printPallet(nameImg, 1, colorRange, plotBarName)
             plotingAfterConv.printPallet(nameImg, 0, colorRange, plotPolName)
             imgs.append(curImg)
+            f+=1
 
     totalImgNum = len(imgs)
     imgnum = 0

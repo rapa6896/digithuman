@@ -25,7 +25,7 @@ def getImage(img):
     return OffsetImage(np.asarray(img.resize([8,8])))
 
 
-def plotgrayscale(imgs_and_avr_brightness):
+def plotgrayscale(imgs_and_avr_brightness,path):
     imgs = [(i[2])for i in imgs_and_avr_brightness]
     x = [(i[1])for i in imgs_and_avr_brightness]
     y = [(i[0])for i in imgs_and_avr_brightness]
@@ -36,10 +36,9 @@ def plotgrayscale(imgs_and_avr_brightness):
     for x0, y0, img in zip(x, y, imgs):
         ab = AnnotationBbox(getImage(img), (x0, y0), frameon=False)
         ax.add_artist(ab)
+    plt.savefig(path, dpi=400)
 
-    plt.show()
 
-
-def dowhatwineed(artist, genre, all,years):
+def dowhatwineed(artist, genre, all,years,path):
     grey_scale_imgs=get_grey_scale_imgs(artist, genre, all,years)
-    plotgrayscale(grey_scale_imgs)
+    plotgrayscale(grey_scale_imgs,path)
